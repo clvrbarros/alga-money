@@ -1,2 +1,2 @@
 # alga-money
-Curso Fullstack Angular e SpringBoot da Algaworks
+My codes while following with Angular and Spring Boot FullStack from Algaworks.
