@@ -6,5 +6,4 @@ import com.example.algamoney.api.model.Category;
 
 //Jpa needs to know the Entity and the type of the primary key 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-
 }
