@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -69,6 +70,9 @@ public class PersonResource {
 	@PutMapping("/{id}")
 	public ResponseEntity<Person> update(@PathVariable Long id, @Valid @RequestBody Person person) {
 		Person savedPerson = personRepository.findById(id).orElse(null);
+		if (savedPerson == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
 		BeanUtils.copyProperties(person, savedPerson, "id");
 		personRepository.save(savedPerson);
 		return ResponseEntity.ok(savedPerson);
