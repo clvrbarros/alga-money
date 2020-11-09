@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.algamoney.api.event.ResourceCreatedEvent;
 import com.example.algamoney.api.model.Person;
 import com.example.algamoney.api.repository.PersonRepository;
+import com.example.algamoney.api.service.PersonService;
 
 @RestController
 @RequestMapping("/person")
@@ -35,6 +36,9 @@ public class PersonResource {
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@Autowired
+	private PersonService personService;
 	
 	@GetMapping
 	public List<Person> list() {
@@ -69,12 +73,7 @@ public class PersonResource {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Person> update(@PathVariable Long id, @Valid @RequestBody Person person) {
-		Person savedPerson = personRepository.findById(id).orElse(null);
-		if (savedPerson == null) {
-			throw new EmptyResultDataAccessException(1);
-		}
-		BeanUtils.copyProperties(person, savedPerson, "id");
-		personRepository.save(savedPerson);
+		Person savedPerson = personService.update(id, person);
 		return ResponseEntity.ok(savedPerson);
 	}
 }
